@@ -25,9 +25,20 @@ pipeline {
         stage('Deliver') {
             steps {
                 sh 'mvn install'
-                script{
+            }
+        }
+        stage('Docker build')
+        {
+            steps{
+                sh 'docker build -t shivaspk/todorestcicd .'
+            }
+        }
+        stage('Docker push')
+        {
+            steps{
+                   script{
                     docker.withRegistry('https://registry.hub.docker.com/', 'docker-shivaspk') {
-                        docker.build('todocicd').push('latest')
+                        docker.push('shivaspk/todocicd:latest')
                     }
                 }
             }
