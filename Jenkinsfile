@@ -25,6 +25,11 @@ pipeline {
         stage('Deliver') {
             steps {
                 sh 'mvn install'
+                script{
+                    docker.withRegistry('https://registry.hub.docker.com/', 'docker-shivaspk') {
+                        docker.build('todocicd').push('latest')
+                    }
+                }
             }
         }
     }
